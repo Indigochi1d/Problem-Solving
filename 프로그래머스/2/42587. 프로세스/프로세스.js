@@ -1,20 +1,19 @@
 function solution(pr, location) {
-    let answer = 0;
+    var answer = 0;
     while(pr.length !== 0){
-        let temp = pr[0];
-        if(Math.max(...pr) !== temp) {
-            pr.splice(0,1);
-            pr.push(temp);
-            location -= 1;
-            if(location < 0) location += pr.length;
-        }
-
-        else {
-            console.log(temp);
+        let poppedPr = pr[0];
+        if(poppedPr === Math.max(...pr)){
             pr.splice(0,1);
             answer += 1;
             if(location === 0) break;
-            location -= 1;
+        }
+        else{
+            pr.splice(0,1);
+            pr.push(poppedPr);
+        }
+        location -= 1;
+        if(location < 0){
+            location += pr.length;
         }
     }
     return answer;
