@@ -1,22 +1,18 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 
 using namespace std;
-vector<int> makeSplittedArray(vector<int>array,int start,int end){
-    vector<int> splittedArray;
-    for(int i=start-1;i<end;i++){
-        splittedArray.push_back(array[i]);
-    }
-    return splittedArray;
-}
 
 vector<int> solution(vector<int> array, vector<vector<int>> commands) {
     vector<int> answer;
-    
-    for(vector<int> command : commands){
-        vector<int> tmpArray;
-        tmpArray = makeSplittedArray(array,command[0],command[1]);
-        sort(tmpArray.begin(),tmpArray.end());
-        answer.push_back(tmpArray[command[2]-1]); 
+    for(int i=0;i<commands.size();i++){
+        vector<int> tmpArray = array;
+        int start = commands[i][0]-1;
+        int end = commands[i][1];
+        int k = commands[i][2]-1;
+        
+        sort(tmpArray.begin()+start,tmpArray.begin()+end);
+        answer.push_back(tmpArray[commands[i][0] + commands[i][2]-2]);
     }
+    
     return answer;
 }
