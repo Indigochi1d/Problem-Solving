@@ -26,10 +26,6 @@ using namespace std;
 // 4. 알파벳 등장 빈도 배열을 순회하며 3.2.2 에서 남긴 알파벳이 있다면 그 알파벳을 가운데에 넣어줌
 // 5. 출력 
 
-
-
-
-
 int main() {
     string input;
     string result;
