@@ -2,38 +2,44 @@
 
 using namespace std;
 
-int asw = -9999999;
-int n;
-string input;
-vector<char> operators;
+string s;
+vector<char> opers;
 vector<int> numbers;
+int n;
+int maxValue = -999999;
 
-int calculate(int num1, char op, int num2)
+int operate(int num1, char op, int num2)
 {
-    if (op == '+')
-        return num1 + num2;
     if (op == '*')
+    {
         return num1 * num2;
+    }
     if (op == '-')
+    {
         return num1 - num2;
+    }
+    if (op == '+')
+    {
+        return num1 + num2;
+    }
 }
 
 void solve(int here, int num)
 {
     if (here == numbers.size() - 1)
     {
-        asw = max(asw, num);
+        maxValue = max(maxValue, num);
         return;
     }
-    solve(here + 1, calculate(num, operators[here], numbers[here + 1]));
-    if (here + 2 <= numbers.size() - 1)
+
+    solve(here + 1, operate(num, opers[here], numbers[here + 1]));
+    if (here + 2 < numbers.size())
     {
-        int tmp = calculate(numbers[here + 1], operators[here + 1], numbers[here + 2]);
-        solve(here + 2, calculate(num, operators[here], tmp));
+        int tmp = operate(numbers[here + 1], opers[here + 1], numbers[here + 2]);
+        solve(here + 2, operate(num, opers[here], tmp));
     }
     return;
 }
-
 int main()
 {
     ios_base::sync_with_stdio(false);
@@ -41,20 +47,19 @@ int main()
     cout.tie(NULL);
 
     cin >> n;
-    cin >> input;
-    for (int i = 0; i < input.size(); i++)
+    cin >> s;
+    for (int i = 0; i < n; i++)
     {
-        if (input[i] == '+' || input[i] == '*' || input[i] == '-')
+        if (s[i] == '+' || s[i] == '*' || s[i] == '-')
         {
-            operators.push_back(input[i]);
+            opers.push_back(s[i]);
         }
         else
         {
-            numbers.push_back(input[i] - '0');
+            numbers.push_back(s[i] - '0');
         }
     }
     solve(0, numbers[0]);
-    cout << asw << "\n";
-
+    cout << maxValue << "\n";
     return 0;
 }
