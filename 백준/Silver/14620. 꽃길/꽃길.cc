@@ -9,12 +9,37 @@ int minValue = 10000;
 const int dx[4] = {1, -1, 0, 0};
 const int dy[4] = {0, 0, 1, -1};
 
-int groundValue(int y, int x)
+bool check(int y, int x)
 {
-    int value;
-    value = flowerbed[y][x];
+    if (visited[y][x])
+        return false;
+    for (int i = 0; i < 4; i++)
+    {
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+        if (visited[ny][nx])
+            return false;
+        if (nx < 0 || nx >= n || ny < 0 || ny >= n)
+            return false;
+    }
+    return true;
+}
 
+void eraseFlower(int y, int x)
+{
+    visited[y][x] = false;
+    for (int i = 0; i < 4; i++)
+    {
+        int ny = y + dy[i];
+        int nx = x + dx[i];
+        visited[ny][nx] = false;
+    }
+}
+
+int getPrice(int y, int x)
+{
     visited[y][x] = true;
+    int value = flowerbed[y][x];
     for (int i = 0; i < 4; i++)
     {
         int nx = x + dx[i];
@@ -25,36 +50,11 @@ int groundValue(int y, int x)
     return value;
 }
 
-bool check(int y, int x)
-{
-    if (visited[y][x])
-        return 0;
-    for (int i = 0; i < 4; i++)
-    {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        if (nx < 0 || nx >= n || ny < 0 || ny >= n || visited[ny][nx])
-            return 0;
-    }
-    return 1;
-}
-
-void eraseFlower(int y, int x)
-{
-    visited[y][x] = 0;
-    for (int i = 0; i < 4; i++)
-    {
-        int ny = y + dy[i];
-        int nx = x + dx[i];
-        visited[ny][nx] = 0;
-    }
-}
-
 void solve(int cnt, int sum_)
 {
     if (cnt == 3)
     {
-        minValue = min(sum_, minValue);
+        minValue = min(minValue, sum_);
         return;
     }
     for (int i = 0; i < n; i++)
@@ -63,11 +63,13 @@ void solve(int cnt, int sum_)
         {
             if (check(i, j))
             {
-                solve(cnt + 1, sum_ + groundValue(i, j));
-                eraseFlower(i, j);
+                int value = getPrice(i, j);
+                solve(cnt + 1, sum_ + value);
+                eraseFlower(i,j);
             }
         }
     }
+    return;
 }
 
 int main()
@@ -84,7 +86,6 @@ int main()
             cin >> flowerbed[i][j];
         }
     }
-
     solve(0, 0);
     cout << minValue;
     return 0;
