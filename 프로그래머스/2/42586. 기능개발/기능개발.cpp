@@ -23,9 +23,6 @@ vector<int> solution(vector<int> progresses, vector<int> speeds) {
         if(flag){
             answer.push_back(check);
             check = 0;
-            for(int a:answer){
-                cout << a << " ";
-            }
             flag = false;
         }  
     }
