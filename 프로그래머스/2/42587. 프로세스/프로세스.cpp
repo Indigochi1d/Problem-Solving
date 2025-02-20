@@ -2,32 +2,33 @@
 
 using namespace std;
 
+queue<pair<int,int>> q;         //{우선순위, 인덱스}
 priority_queue<int> pq;
-queue<pair<int,int>> q;
 
 int solution(vector<int> priorities, int location) {
     int answer = 0;
-    int size = priorities.size();
     
-    for(int i=0;i<size;i++){
+    
+    for(int i=0;i<priorities.size();i++){
+        q.push({priorities[i],i});
         pq.push(priorities[i]);
-        q.push({priorities[i],i}); // 우선순위, 인덱스
     }
     
-    while(!q.empty()){
+    while(q.size()){
         int priority = q.front().first;
-        int index = q.front().second;
+        int idx = q.front().second;
         q.pop();
         
         if(pq.top() == priority){
             pq.pop();
             answer++;
-            if(index == location) return answer;
+            if(idx == location) return answer;
         }
         else{
-            q.push({priority,index});
+            q.push({priority,idx});
         }
     }
+    
     
     return answer;
 }
