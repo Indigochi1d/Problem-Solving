@@ -1,47 +1,52 @@
-#include <bits/stdc++.h>
-
+#include<bits/stdc++.h>
+ 
 using namespace std;
-typedef long long ll;
-
-ll n,m;
-ll maxValue=-1;
-vector<int> trees;
-
-ll binary_Search(){
-    ll low=0;
-    ll high = trees[n-1];
-
-    while(low<=high){
-        ll sum=0;
-        ll mid = (low+high)/2;
-        for(int i=0;i<n;i++){
-            if(trees[i] - mid > 0){
-                sum+=trees[i]-mid;
-            }
-        }
-        if(sum >= m){
+ 
+int n, m;
+long long ans = LLONG_MAX;
+ 
+vector<int> input;
+ 
+long long calc(int mid) {
+    long long sum = 0;
+    for(int i = 0; i < n; i++) {
+        if(input[i] > mid)
+            sum += input[i] - mid;
+    }
+    return sum;
+}
+ 
+long long binarySearch() {
+    int low = 0;
+    int high = input[n - 1];
+    int mid;
+ 
+    while(low <= high) {
+        mid = (low + high) / 2;
+ 
+        long long temp = calc(mid);
+ 
+        if(temp >= m) {
             low = mid+1;
-            if(mid > maxValue){
-                maxValue = mid;
-            }
         }
-        else{
+        else {
             high = mid-1;
         }
     }
-    return maxValue;
+ 
+    return high;
 }
-
-
-int main(){
+ 
+int main() {
+    ios_base::sync_with_stdio(false); cin.tie(0); cout.tie(0);
     cin >> n >> m;
-    trees.resize(n);
-    for(int i=0;i<n;i++){
-        cin >> trees[i];
+    for(int i = 0; i < n; i++) {
+        int a;
+        cin >> a;
+        input.push_back(a);
     }
-    sort(trees.begin(),trees.end());
-    ll answer = binary_Search();
-    cout << answer;
-
-    return 0;
+ 
+    sort(input.begin(), input.end());
+ 
+    cout << binarySearch();
 }
